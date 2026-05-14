@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Can I Court You?</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#0f172a;
+    color:white;
+    font-family:Arial;
+    overflow:hidden;
+}
+
+.box{
+    text-align:center;
+    background:rgba(255,255,255,0.08);
+    padding:25px;
+    border-radius:20px;
+    width:90%;
+    max-width:650px;
+}
+
+button{
+    padding:12px 25px;
+    margin:10px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.yes{background:#22c55e;color:white;}
+.no{background:#ef4444;color:white;}
+
+#text{
+    margin-top:15px;
+    min-height:120px;
+    font-size:15px;
+    line-height:1.6;
+    white-space:pre-wrap;
+}
+
+#popup{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%) scale(0);
+    width:220px;
+    background:rgba(0,0,0,0.7);
+    padding:12px;
+    border-radius:15px;
+    opacity:0;
+    transition:0.3s ease;
+}
+
+#popup.show{
+    transform:translate(-50%, -50%) scale(1);
+    opacity:1;
+}
+
+#popup img{
+    width:100%;
+    border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>Can I Court You?</h2>
+
+    <button class="yes" onclick="yes()">YES 💖</button>
+    <button class="no" onclick="no()">NO 😢</button>
+
+    <div id="text"></div>
+
+</div>
+
+<div id="popup">
+    <img id="popupGif" src="">
+</div>
+
+<audio id="music" src="UNTINIFOUNDYOU.mp3"></audio>
+
+<script>
+const text = document.getElementById("text");
+const popup = document.getElementById("popup");
+const popupGif = document.getElementById("popupGif");
+const music = document.getElementById("music");
+
+let typingTimeout;
+
+const introMessage = `I know we’ve only known each other for a few weeks, and maybe it still feels too early for some people, but I honestly enjoy talking to you and getting to know you little by little. There’s something about you that makes me want to stay, listen, and learn more about who you are.
+
+I’m not here to rush anything or pressure you. I just want to be honest about my intentions from the start. I want to know you better, spend more time with you, make you smile, and show you that I’m genuine.
+
+So even if we haven’t known each other for that long yet, I’d still like to ask respectfully… can I court you?`;
+
+const yesMessage = `Thank you for saying YES 💖
+
+I’m really grateful that you gave me a chance.
+
+Even if we’re far from each other, I will wait for you.
+
+No pressure, just patience, understanding, and consistency.
+
+Thank you 💖`;
+
+const noMessage = `I understand 😢
+
+Thank you for being honest. I still respect you.`;
+
+function typeText(message, i=0){
+    clearTimeout(typingTimeout);
+
+    if(i===0){
+        text.innerHTML="";
+    }
+
+    if(i < message.length){
+        text.innerHTML += message.charAt(i);
+        typingTimeout = setTimeout(()=>typeText(message,i+1),20);
+    }
+}
+
+function showPopup(gif){
+    popupGif.src = gif;
+    popup.classList.add("show");
+
+    setTimeout(()=>{
+        popup.classList.remove("show");
+    },3000);
+}
+
+window.onload = ()=>{
+    typeText(introMessage);
+}
+
+function yes(){
+    typeText(yesMessage);
+
+    showPopup("https://media.giphy.com/media/6Ee25N9KcBPtSrJFVz/giphy.gif");
+
+    confetti({particleCount:200, spread:100});
+
+    music.currentTime = 0;
+    music.play();
+}
+
+function no(){
+    typeText(noMessage);
+
+    showPopup("https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWYzaHhydGszM3hmNWYzZHZzMzdjMjV3OTdyNTdhb3VxaDk1bzBmOSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ruyS8Zw9sBqE5UjOnY/giphy.gif");
+}
+</script>
+
+</body>
+</html>
